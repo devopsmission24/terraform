@@ -1,3 +1,9 @@
+################ Authentication ##########33
+provider "aws" {
+    region = var.myregion
+}
+
+#################### Variables ####################
 variable "myregion"{
 type = string
 }
@@ -14,28 +20,8 @@ variable "gunicorn_count"{
 type = string
 }
 
-variable "jenkins_count"{
-type = string
-}
-
-variable "artifactory_count"{
-type = string
-}
-
-variable "haproxy_count"{
-type = string
-}
-variable "sql_count"{
-type = string
-}
-
-################ Authentication ##########33
-provider "aws" {
-    region = var.myregion
-}
 
 #########  Networking ##############
-# Step 1
 resource "aws_vpc" "webappvpc" {
     cidr_block = "10.0.0.0/16"
     tags = {
@@ -124,57 +110,5 @@ resource "aws_instance" "gunicorn_count" {
   instance_type = "t2.medium"
   tags = {
     Name = "gunicorn_count"
-  }
-}
-resource "aws_instance" "sql_count" {
-  count = var.sql_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "my"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.medium"
-  tags = {
-    Name = "mysql-server"
-  }
-}
-
-
-resource "aws_instance" "haproxy_count" {
-  count = var.haproxy_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "my"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.micro"
-  tags = {
-    Name = "haproxy_count"
-  }
-}
- 
-resource "aws_instance" "jenkins_count" {
-  count = var.jenkins_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "my"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.micro"
-  tags = {
-    Name = "jenkins_count"
-  }
-}
-
-resource "aws_instance" "artifactory_count" {
-  count = var.artifactory_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "my"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.medium"
-  tags = {
-    Name = "artifactory_count"
   }
 }
