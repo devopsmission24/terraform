@@ -16,7 +16,7 @@ variable "mypublickey"{
 type = string
 }
 
-variable "gunicorn_count"{
+variable "server_count"{
 type = string
 }
 
@@ -100,8 +100,8 @@ resource "aws_key_pair" "my" {
 }
 
 ###############  Computing ############
-resource "aws_instance" "gunicorn_count" {
-  count = var.gunicorn_count
+resource "aws_instance" "webapp_server" {
+  count = var.server_count
   ami           = var.myami
   associate_public_ip_address = "true"
   vpc_security_group_ids = [aws_security_group.mysg.id]
@@ -109,6 +109,12 @@ resource "aws_instance" "gunicorn_count" {
   subnet_id = aws_subnet.mysubnet.id
   instance_type = "t2.medium"
   tags = {
-    Name = "gunicorn_count"
+    Name = "webapp-server"
   }
 }
+
+#################### Output ######################
+
+output "ssh_to_webapp_server" {
+  value = "ssh centos@${aws_instance.webapp_server.public_ip}"
+} 
