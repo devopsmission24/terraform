@@ -116,5 +116,5 @@ resource "aws_instance" "webapp_server" {
 #################### Output ######################
 
 output "ssh_to_webapp_server" {
-  value = "ssh centos@${aws_instance.webapp_server.public_ip}"
+  value = "ssh centos@${aws_instance.webapp_server[0].public_ip}"
 } 
